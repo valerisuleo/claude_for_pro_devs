@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git:*)"
+      "Bash(git:*)",
+      "Bash(npm test:*)",
+      "Bash(mkdir -p /Users/valerio.risuleo/Development/personal/claude_for_pro_devs/react-expense-tracker-application/.claude/skills/bulletproof)",
+      "Bash(cp ~/.claude/skills/bulletproof/SKILL.md /Users/valerio.risuleo/Development/personal/claude_for_pro_devs/react-expense-tracker-application/.claude/skills/bulletproof/SKILL.md)",
+      "Bash(rm -rf ~/.claude/skills/bulletproof)"
     ]
   }
 }
