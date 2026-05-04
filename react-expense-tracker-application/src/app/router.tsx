@@ -9,25 +9,19 @@ const RoutingModule = () => {
     return (
         <Fragment>
             <NavbarComponent />
-            <main className="container">
-                <div className="row">
-
-                    <div className="col">
-                        <Suspense fallback={'Loading...'}>
-                            <Routes>
-                                {/* Redirect from base path to /games */}
-                                <Route
-                                    path="/"
-                                    element={<Navigate replace to="/expensetracker" />}
-                                />
-                                <Route
-                                    path="/expensetracker/*"
-                                    element={<ExercisesRouter />}
-                                />
-                            </Routes>
-                        </Suspense>
-                    </div>
-                </div>
+            <main>
+                <Suspense fallback={'Loading...'}>
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={<Navigate replace to="/expensetracker" />}
+                        />
+                        <Route
+                            path="/expensetracker/*"
+                            element={<ExercisesRouter />}
+                        />
+                    </Routes>
+                </Suspense>
             </main>
         </Fragment>
     );
