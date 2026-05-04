@@ -38,14 +38,12 @@ export const processErrorMessages = (errors, label) => {
     return errors
         .map((err) => {
             if (
-                err.message.includes(
-                    'String must contain at least 1 character(s)'
-                )
+                err.message.includes('String must contain at least 1 character')
             ) {
                 return `${label} is required`;
             }
             if (err.message.includes('String')) {
-                return err.message.replace('String', label);
+                return err.message.replace('String', label).replace('(s)', 's');
             }
             return err.message;
         })
