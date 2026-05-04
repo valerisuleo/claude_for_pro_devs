@@ -1,7 +1,11 @@
+import startCase from 'lodash/startCase';
+
+import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
+
 import ErrorsComponent from '../errors/errors-component';
 import { IFormCtrl } from '../hooks/interfaces';
 import styles from '../errors/errors-component.module.scss';
-import startCase from 'lodash/startCase';
 
 const InputGroup = ({
     label,
@@ -15,18 +19,22 @@ const InputGroup = ({
 }: IFormCtrl) => {
     return (
         <div className="mb-3">
-            <label htmlFor={name} className="form-label">
+            <label
+                htmlFor={name}
+                className="mb-1.5 block text-sm font-medium text-foreground"
+            >
                 {startCase(label)}
             </label>
-            <input
-                className={`form-control ${error ? styles.error : ''}`}
+            <Input
+                id={name}
                 name={name}
                 type={type}
+                value={value}
+                placeholder={placeholder}
                 onChange={onChange}
                 onBlur={onBlur}
-                value={value}
-                id={name} // for testing purposes
-                placeholder={placeholder}
+                aria-invalid={Boolean(error)}
+                className={cn(error && styles.error)}
             />
             {error && <ErrorsComponent error={error} />}
         </div>
