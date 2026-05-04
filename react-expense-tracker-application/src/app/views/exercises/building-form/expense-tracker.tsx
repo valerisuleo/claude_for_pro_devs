@@ -12,6 +12,8 @@ import TableComponent from 'src/app/library/tables/table';
 import { IButtonAction, IExpense } from './interfaces';
 // 5. Configuration or mock data imports
 import { actions, formControllers, mock, tableHeader } from './config';
+import BtnCn from 'src/app/library/components/button/button';
+import type { IClasses } from 'src/app/common/interfaces';
 
 const ExpenseTracker = () => {
     const defaultList = mock.map((item) => ({
@@ -35,11 +37,15 @@ const ExpenseTracker = () => {
         resetOnSchemaChange: false,
     });
 
-    const { tableBody, updateTable, handleSort } = useTable(expenses, tableHeader, {
-        sortable: true,
-        defaultSortOrder: 'asc',
-        mode: 'default',
-    });
+    const { tableBody, updateTable, handleSort } = useTable(
+        expenses,
+        tableHeader,
+        {
+            sortable: true,
+            defaultSortOrder: 'asc',
+            mode: 'default',
+        }
+    );
 
     function doSubmit(): void {
         console.log('POST REQ', formGroup);
@@ -76,13 +82,18 @@ const ExpenseTracker = () => {
         return (
             <div className="d-flex justify-content-evenly">
                 {actions.map((btn: IButtonAction, i) => (
-                    <button
+                    <BtnCn
                         key={i}
-                        className={`me-2 btn btn-sm btn-outline-${btn.classes}`}
-                        onClick={() => handleActions(row, btn)}
-                    >
-                        {btn.label}
-                    </button>
+                        label={btn.label}
+                        type="button"
+                        classes={{
+                            contextual: btn.classes as IClasses['contextual'],
+                            size: 'sm',
+                            custom: 'me-2',
+                        }}
+                        onEmitEvent={() => handleActions(row, btn)}
+                        isDarkMode={false}
+                    />
                 ))}
             </div>
         );
@@ -97,7 +108,10 @@ const ExpenseTracker = () => {
         ];
     }
 
-    const handleActions = (currentRow: IExpense, currentBtn: IButtonAction): void => {
+    const handleActions = (
+        currentRow: IExpense,
+        currentBtn: IButtonAction
+    ): void => {
         if (currentBtn.name === 'delete') {
             deleteExpense(currentRow);
         } else {
@@ -149,9 +163,17 @@ const ExpenseTracker = () => {
                                 ) : null}
                             </Fragment>
                         ))}
-                        <button type="submit" className="btn btn-primary my-3">
-                            Submit
-                        </button>
+                        <BtnCn
+                            label="Submit"
+                            type="submit"
+                            classes={{
+                                contextual: 'primary',
+                                size: 'md',
+                                custom: 'my-3',
+                            }}
+                            onEmitEvent={() => undefined}
+                            isDarkMode={false}
+                        />
                     </form>
                 </div>
             </div>

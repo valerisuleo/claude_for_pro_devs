@@ -1,18 +1,61 @@
+import { type VariantProps } from 'class-variance-authority';
+
+import { IClasses } from '../../../common/interfaces';
+import { Button, buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+
 import { IBtn } from './interfaces';
 
-const Button = ({ label, type, classes, onEmitEvent, className, isDarkMode }: IBtn) => {
-    const getClasses = () => {
-        let result = `btn btn-${classes.size} `;
-        result += !isDarkMode ? `btn-${classes.contextual}` : `btn-${className}`;
+function contextualToVariant(
+    contextual: IClasses['contextual']
+): NonNullable<VariantProps<typeof buttonVariants>['variant']> {
+    const map = {
+        primary: 'default',
+        secondary: 'secondary',
+        success: 'default',
+        warning: 'outline',
+        danger: 'destructive',
+        close: 'ghost',
+        light: 'ghost',
+        dark: 'secondary',
+    } as const;
 
-        return result;
-    };
+    return map[contextual];
+}
+
+function classesSizeToUiSize(
+    size?: IClasses['size']
+): NonNullable<VariantProps<typeof buttonVariants>['size']> {
+    if (size === 'lg') return 'lg';
+    if (size === 'sm') return 'sm';
+    return 'default';
+}
+
+const BtnCn = ({
+    label,
+    type,
+    classes,
+    onEmitEvent,
+    className,
+    isDarkMode,
+}: IBtn) => {
+    const size = classesSizeToUiSize(classes.size);
 
     return (
-        <button onClick={() => onEmitEvent()} type={type} className={getClasses()}>
+        <Button
+            type={type}
+            onClick={() => onEmitEvent()}
+            variant={
+                !isDarkMode
+                    ? contextualToVariant(classes.contextual)
+                    : 'secondary'
+            }
+            size={size}
+            className={cn(classes.custom, isDarkMode && className)}
+        >
             {label}
-        </button>
+        </Button>
     );
 };
 
-export default Button;
+export default BtnCn;
