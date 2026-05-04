@@ -1,26 +1,37 @@
+import type { FC } from 'react';
+
+import {
+    Alert,
+    AlertAction,
+    AlertDescription,
+} from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+
 import { IAlert } from './interfaces';
 
-const AlertsComponent = ({ children, classes, onClose }: IAlert) => {
-    const setContextualClass = () => {
-        let contextualClass = `alert alert-${classes} `;
-        contextualClass += onClose ? 'alert-dismissible fade show' : contextualClass;
-
-        return contextualClass;
-    };
-
+const AlertsComponent: FC<IAlert> = ({
+    children,
+    variant = 'default',
+    onClose,
+    className,
+}) => {
     return (
-        <div className={setContextualClass()} role="alert">
-            {children}
-            {onClose && (
-                <button
-                    type="button"
-                    className="btn btn-close"
-                    data-bs-dismiss="alert"
-                    aria-label="Close"
-                    onClick={() => onClose()}
-                ></button>
-            )}
-        </div>
+        <Alert variant={variant} className={className}>
+            <AlertDescription>{children}</AlertDescription>
+            {onClose ? (
+                <AlertAction>
+                    <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon-sm"
+                        aria-label="Close"
+                        onClick={() => onClose()}
+                    >
+                        ×
+                    </Button>
+                </AlertAction>
+            ) : null}
+        </Alert>
     );
 };
 

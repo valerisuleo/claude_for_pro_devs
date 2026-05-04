@@ -1,6 +1,10 @@
 import { useState } from 'react';
-import { Column, Config } from '../interfaces';
+
+import { TableCell, TableRow } from '@/components/ui/table';
+
 import _ from 'lodash';
+
+import { Column, Config } from '../interfaces';
 
 function useTable<T>(data: T[], columns: Column[], config: Config) {
     const [dataSource, setDataSource] = useState<T[]>(data);
@@ -16,15 +20,15 @@ function useTable<T>(data: T[], columns: Column[], config: Config) {
         if (config.mode === 'default') {
             return preparedRows.map((row, rowIndex) => {
                 return (
-                    <tr key={rowIndex}>
+                    <TableRow key={rowIndex}>
                         {row.map((cell, cellIndex) => (
-                            <td key={`${rowIndex}-${cellIndex}`}>
+                            <TableCell key={`${rowIndex}-${cellIndex}`}>
                                 {typeof cell === 'function'
                                     ? cell(dataSource[rowIndex])
                                     : _.startCase(cell)}
-                            </td>
+                            </TableCell>
                         ))}
-                    </tr>
+                    </TableRow>
                 );
             });
         } else {

@@ -8,7 +8,6 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { cn } from '@/lib/utils';
 
 import { ITable } from './interfaces';
 
@@ -16,26 +15,15 @@ const TableComponent: FC<ITable> = ({
     tableHeader,
     tableBody,
     onSort,
-    classes,
+    className,
 }) => {
-    const cls = classes ?? '';
-    const bordered = cls.includes('bordered');
-    const striped = cls.includes('striped');
-    const hover = cls.includes('hover');
-
     return (
-        <Table
-            className={cn(bordered && 'rounded-md border border-border')}
-        >
+        <Table className={className}>
             <TableHeader>
-                <TableRow className="border-b border-border bg-muted/50 hover:bg-muted/50">
+                <TableRow>
                     {tableHeader.map((item, index) => (
                         <TableHead
                             key={index}
-                            className={cn(
-                                item.name !== 'actions' &&
-                                    'cursor-pointer select-none',
-                            )}
                             onClick={() =>
                                 item.name !== 'actions' && onSort(item)
                             }
@@ -47,15 +35,7 @@ const TableComponent: FC<ITable> = ({
                     ))}
                 </TableRow>
             </TableHeader>
-            <TableBody
-                className={cn(
-                    striped && '[&_tr:nth-child(even)]:bg-muted/40',
-                    '[&_tr]:transition-colors',
-                    hover
-                        ? '[&_tr:hover]:bg-muted/70'
-                        : '[&_tr:hover]:bg-muted/50',
-                )}
-            >{tableBody}</TableBody>
+            <TableBody>{tableBody}</TableBody>
         </Table>
     );
 };

@@ -1,37 +1,16 @@
-import type { ChangeEvent } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import ErrorsComponent from '../errors/errors-component';
+import { IFormCtrl } from '../hooks/interfaces';
 import startCase from 'lodash/startCase';
-
 import {
     Select,
     SelectContent,
+    SelectGroup,
     SelectItem,
+    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { cn } from '@/lib/utils';
-
-import ErrorsComponent from '../errors/errors-component';
-import { IFormCtrl } from '../hooks/interfaces';
-import styles from '../errors/errors-component.module.scss';
-
-/** Radix Select.Item cannot use ""; map empty option values to this sentinel. */
-const RADIX_EMPTY = '__empty__';
-
-function toRadixValue(raw: string | undefined): string {
-    return raw === undefined || raw === '' ? RADIX_EMPTY : raw;
-}
-
-function fromRadixValue(v: string): string {
-    return v === RADIX_EMPTY ? '' : v;
-}
-
-function optionToRadixValue(
-    item: Record<string, string>,
-    valueProp: string
-): string {
-    const raw = item[valueProp];
-    return raw === undefined || raw === '' ? RADIX_EMPTY : String(raw);
-}
 
 const SelectComponent = ({
     options,
@@ -46,76 +25,46 @@ const SelectComponent = ({
     error,
     isDark,
 }: IFormCtrl) => {
-    const vp = valueProp ?? 'value';
-    const tp = textProp ?? 'label';
-
-    const handleValueChange = (v: string) => {
-        const synthetic = {
-            target: {
-                name,
-                value: fromRadixValue(v),
-                type: 'select-one',
-            },
-        } as ChangeEvent<HTMLSelectElement>;
-        onChange(synthetic);
-    };
-
     return (
-        <div
-            className={cn(
-                'mb-3',
-                isDark && 'rounded-md bg-zinc-900 p-3 text-white',
-            )}
-        >
-            <label
-                htmlFor={name}
-                className={cn(
-                    'mb-1.5 block text-sm font-medium text-foreground',
-                    isDark && 'text-white',
-                )}
-            >
-                {startCase(label)}
-            </label>
-
+        <div>
+            <label htmlFor={name}>{startCase(label)}</label>
             <Select
-                value={toRadixValue(value)}
-                onValueChange={handleValueChange}
-                data-type={type}
+                value={value || ''}
+                onValueChange={(val) =>
+                    onChange?.({
+                        target: { value: val, name, type },
+                    } as any)
+                }
+                name={name}
             >
                 <SelectTrigger
                     id={name}
+                    onBlur={() =>
+                        onBlur?.({
+                            target: { name, value: value || '', type },
+                        } as any)
+                    }
+                    data-type={type}
                     aria-invalid={Boolean(error)}
-                    onBlur={onBlur}
-                    className={cn(
-                        'w-full min-w-0 justify-between',
-                        error && styles.error,
-                        isDark && 'border-zinc-600 bg-zinc-900 text-white',
-                    )}
+                    className="w-full max-w-48"
                 >
-                    <SelectValue placeholder={startCase(label)} />
+                    <SelectValue placeholder="" />
                 </SelectTrigger>
-                <SelectContent
-                    position="popper"
-                    className="w-[var(--radix-select-trigger-width)]"
-                >
-                    {options?.map((item, index) => {
-                        const record = item as unknown as Record<
-                            string,
-                            string
-                        >;
-                        const itemValue = optionToRadixValue(record, vp);
-                        return (
+                <SelectContent>
+                    <SelectGroup>
+                        <SelectLabel></SelectLabel>
+                        {options?.map((item) => (
                             <SelectItem
-                                key={`${itemValue}-${index}`}
-                                value={itemValue}
+                                key={item[valueProp]}
+                                value={item[valueProp]}
                             >
-                                {startCase(record[tp])}
+                                {startCase(item[textProp])}
                             </SelectItem>
-                        );
-                    })}
+                        ))}
+                    </SelectGroup>
                 </SelectContent>
             </Select>
-            {error && <ErrorsComponent error={error} />}
+            {error ? <ErrorsComponent error={error} /> : null}
         </div>
     );
 };

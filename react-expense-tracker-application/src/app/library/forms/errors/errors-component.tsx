@@ -11,7 +11,7 @@ const parseError = (error: string): string[] => {
 const ErrorsComponent = ({ error }: IErrorsComponent) => (
     <Fragment>
         {parseError(error).map((err, index) => (
-            <div key={index} className="d-flex align-items-start mb-3 invalid-feedback">
+            <div key={index} className="mt-1 text-sm text-destructive">
                 {err}
             </div>
         ))}

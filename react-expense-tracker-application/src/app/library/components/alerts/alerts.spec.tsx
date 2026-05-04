@@ -4,7 +4,9 @@ import Alerts from './alerts';
 
 describe('Alerts', () => {
     it('should render successfully', () => {
-        const { baseElement } = render(<Alerts children={''} classes={'primary'} />);
+        const { baseElement } = render(
+            <Alerts children={''} variant="default" />
+        );
         expect(baseElement).toBeTruthy();
     });
 });

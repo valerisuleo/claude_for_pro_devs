@@ -13,7 +13,6 @@ import { IButtonAction, IExpense } from './interfaces';
 // 5. Configuration or mock data imports
 import { actions, formControllers, mock, tableHeader } from './config';
 import BtnCn from 'src/app/library/components/button/button';
-import type { IClasses } from 'src/app/common/interfaces';
 
 const ExpenseTracker = () => {
     const defaultList = mock.map((item) => ({
@@ -80,19 +79,16 @@ const ExpenseTracker = () => {
 
     function renderActions(row: IExpense): React.ReactNode {
         return (
-            <div className="d-flex justify-content-evenly">
+            <div className="flex flex-wrap items-center justify-end gap-2">
                 {actions.map((btn: IButtonAction, i) => (
                     <BtnCn
                         key={i}
                         label={btn.label}
                         type="button"
-                        classes={{
-                            contextual: btn.classes as IClasses['contextual'],
-                            size: 'sm',
-                            custom: 'me-2',
-                        }}
+                        variant={btn.variant ?? 'outline'}
+                        size={btn.size ?? 'sm'}
+                        className={btn.className}
                         onEmitEvent={() => handleActions(row, btn)}
-                        isDarkMode={false}
                     />
                 ))}
             </div>
@@ -130,57 +126,61 @@ const ExpenseTracker = () => {
         setCategory(value);
     };
 
+    const fieldShell =
+        'min-w-0 [&_label]:mb-2 [&_label]:block [&_label]:text-sm [&_label]:font-medium [&_label]:text-foreground';
+
     return (
         <Fragment>
-            <div className="row mt-5">
-                <div className="col-6 mx-auto">
-                    <form onSubmit={handleSubmit}>
-                        {controllers.map((ctrl) => (
-                            <Fragment key={ctrl.id}>
-                                {ctrl.type === 'text' ? (
-                                    <div>
-                                        {renderInput(
-                                            ctrl,
-                                            handleChange,
-                                            handleBlur,
-                                            formGroup,
-                                            errorMessages
-                                        )}
-                                    </div>
-                                ) : null}
-                                {ctrl.type === 'select' ? (
-                                    <div>
-                                        {renderSelect(
-                                            ctrl,
-                                            handleChange,
-                                            handleBlur,
-                                            formGroup,
-                                            'value',
-                                            'label',
-                                            errorMessages
-                                        )}
-                                    </div>
-                                ) : null}
-                            </Fragment>
-                        ))}
+            <section className="mx-auto max-w-4xl px-4 pb-10 pt-12 sm:px-6 lg:px-8">
+                <form
+                    className="grid grid-cols-1 gap-x-6 gap-y-5 md:grid-cols-2"
+                    onSubmit={handleSubmit}
+                >
+                    {controllers.map((ctrl) => (
+                        <Fragment key={ctrl.id}>
+                            {ctrl.type === 'text' ? (
+                                <div className={fieldShell}>
+                                    {renderInput(
+                                        ctrl,
+                                        handleChange,
+                                        handleBlur,
+                                        formGroup,
+                                        errorMessages
+                                    )}
+                                </div>
+                            ) : null}
+                            {ctrl.type === 'select' ? (
+                                <div className={`${fieldShell} md:col-span-2`}>
+                                    {renderSelect(
+                                        ctrl,
+                                        handleChange,
+                                        handleBlur,
+                                        formGroup,
+                                        'value',
+                                        'label',
+                                        errorMessages
+                                    )}
+                                </div>
+                            ) : null}
+                        </Fragment>
+                    ))}
+                    <div className="md:col-span-2">
                         <BtnCn
                             label="Submit"
                             type="submit"
-                            classes={{
-                                contextual: 'primary',
-                                size: 'md',
-                                custom: 'my-3',
-                            }}
+                            variant="default"
+                            size="default"
+                            className="mt-2"
                             onEmitEvent={() => undefined}
-                            isDarkMode={false}
                         />
-                    </form>
-                </div>
-            </div>
-            <div className="row mt-5">
-                <div className="col-6 mx-auto">
-                    {expenses.length ? (
-                        <Fragment>
+                    </div>
+                </form>
+            </section>
+
+            <section className="mx-auto max-w-4xl px-4 pb-16 pt-4 sm:px-6 lg:px-8">
+                {expenses.length ? (
+                    <div className="flex flex-col gap-8">
+                        <div className={fieldShell}>
                             <SelectComponent
                                 options={getOptions()}
                                 textProp="label"
@@ -192,23 +192,22 @@ const ExpenseTracker = () => {
                                 value={category}
                                 type={'select'}
                             />
+                        </div>
 
-                            <TableComponent
-                                tableHeader={tableHeader}
-                                tableBody={tableBody()}
-                                onSort={handleSort}
-                                classes="bordered"
-                            />
-                        </Fragment>
-                    ) : (
-                        <AlertsComponent classes="warning">
-                            Oops! Fill the form to add an expense to the list...
-                        </AlertsComponent>
-                    )}
-                </div>
-
-                {/* <p>{JSON.stringify(expenses)}</p> */}
-            </div>
+                        <TableComponent
+                            tableHeader={tableHeader}
+                            tableBody={tableBody()}
+                            onSort={handleSort}
+                            className="rounded-md border border-border bg-card text-card-foreground shadow-xs"
+                        />
+                    </div>
+                ) : (
+                    <AlertsComponent variant="default">
+                        Oops! Fill the form to add an expense to the list...
+                    </AlertsComponent>
+                )}
+            </section>
+            {JSON.stringify(formGroup)}
         </Fragment>
     );
 };

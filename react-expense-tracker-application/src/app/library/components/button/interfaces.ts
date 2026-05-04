@@ -1,10 +1,8 @@
-import { IClasses, IDarkMode } from '../../../common/interfaces';
+import type { ComponentProps, ReactNode } from 'react';
 
-export interface Btn {
-    label: string;
-    classes: IClasses;
-    type: 'button' | 'submit' | 'reset';
+import { Button } from '@/components/ui/button';
+
+export type IBtn = Omit<ComponentProps<typeof Button>, 'children' | 'onClick'> & {
+    label: ReactNode;
     onEmitEvent: () => void;
-}
-
-export type IBtn = Btn & IDarkMode;
+};

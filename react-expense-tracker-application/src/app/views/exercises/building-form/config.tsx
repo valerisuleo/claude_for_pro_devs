@@ -62,14 +62,10 @@ export const tableHeader: Column[] = [
 ];
 
 export const actions: IButtonAction[] = [
-    // {
-    //     classes: 'warning',
-    //     label: 'Edit',
-    //     name: 'edit',
-    // },
     {
-        classes: 'danger',
         label: 'Delete',
         name: 'delete',
+        variant: 'destructive',
+        size: 'sm',
     },
 ];
