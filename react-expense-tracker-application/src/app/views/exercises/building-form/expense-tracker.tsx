@@ -13,6 +13,7 @@ import { IButtonAction, IExpense } from './interfaces';
 // 5. Configuration or mock data imports
 import { actions, formControllers, mock, tableHeader } from './config';
 import BtnComponent from 'src/app/library/components/button/button';
+import SpendingChart from './spending-chart';
 
 const ExpenseTracker = () => {
     const defaultList = mock.map((item) => ({
@@ -182,6 +183,7 @@ const ExpenseTracker = () => {
             <section className="mx-auto max-w-4xl px-4 pb-16 pt-4 sm:px-6 lg:px-8">
                 {expenses.length ? (
                     <div className="flex flex-col gap-8">
+                        <SpendingChart expenses={expenses} />
                         <div className={fieldShell}>
                             <SelectComponent
                                 options={getOptions()}

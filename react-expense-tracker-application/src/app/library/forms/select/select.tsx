@@ -53,7 +53,7 @@ const SelectComponent = ({
                 <SelectContent>
                     <SelectGroup>
                         <SelectLabel></SelectLabel>
-                        {options?.map((item) => (
+                        {options?.filter((item) => !!item[valueProp]).map((item) => (
                             <SelectItem
                                 key={item[valueProp]}
                                 value={item[valueProp]}
