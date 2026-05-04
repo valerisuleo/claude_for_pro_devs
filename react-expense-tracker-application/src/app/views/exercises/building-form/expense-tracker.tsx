@@ -211,7 +211,6 @@ const ExpenseTracker = () => {
                     </AlertsComponent>
                 )}
             </section>
-            {JSON.stringify(errorMessages)}
         </Fragment>
     );
 };

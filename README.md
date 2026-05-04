@@ -1,1 +1,1 @@
-# claude_for_pro_devs
+# Welcome to the new er of coding!
