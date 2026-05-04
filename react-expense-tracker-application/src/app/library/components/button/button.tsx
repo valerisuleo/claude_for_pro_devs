@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 
 import type { IBtn } from './interfaces';
 
-const BtnCn = ({ label, onEmitEvent, ...props }: IBtn) => {
+const BtnComponent = ({ label, onEmitEvent, ...props }: IBtn) => {
     return (
         <Button {...props} onClick={() => onEmitEvent()}>
             {label}
@@ -10,4 +10,4 @@ const BtnCn = ({ label, onEmitEvent, ...props }: IBtn) => {
     );
 };
 
-export default BtnCn;
+export default BtnComponent;

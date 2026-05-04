@@ -12,7 +12,7 @@ import TableComponent from 'src/app/library/tables/table';
 import { IButtonAction, IExpense } from './interfaces';
 // 5. Configuration or mock data imports
 import { actions, formControllers, mock, tableHeader } from './config';
-import BtnCn from 'src/app/library/components/button/button';
+import BtnComponent from 'src/app/library/components/button/button';
 
 const ExpenseTracker = () => {
     const defaultList = mock.map((item) => ({
@@ -26,6 +26,7 @@ const ExpenseTracker = () => {
     const {
         formGroup,
         errorMessages,
+        isFormValid,
         resetForm,
         handleChange,
         handleSubmit,
@@ -81,7 +82,7 @@ const ExpenseTracker = () => {
         return (
             <div className="flex flex-wrap items-center justify-end gap-2">
                 {actions.map((btn: IButtonAction, i) => (
-                    <BtnCn
+                    <BtnComponent
                         key={i}
                         label={btn.label}
                         type="button"
@@ -165,12 +166,13 @@ const ExpenseTracker = () => {
                         </Fragment>
                     ))}
                     <div className="md:col-span-2">
-                        <BtnCn
+                        <BtnComponent
                             label="Submit"
                             type="submit"
                             variant="default"
                             size="default"
                             className="mt-2"
+                            disabled={!isFormValid}
                             onEmitEvent={() => undefined}
                         />
                     </div>
@@ -207,7 +209,7 @@ const ExpenseTracker = () => {
                     </AlertsComponent>
                 )}
             </section>
-            {JSON.stringify(formGroup)}
+            {JSON.stringify(errorMessages)}
         </Fragment>
     );
 };

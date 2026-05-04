@@ -1,9 +1,9 @@
 import { render, fireEvent } from '@testing-library/react';
 
-import BtnCn from './button';
+import BtnComponent from './button';
 import type { IBtn } from './interfaces';
 
-describe('BtnCn', () => {
+describe('BtnComponent', () => {
     const mockProps: IBtn = {
         label: 'Click me!',
         type: 'button',
@@ -13,12 +13,12 @@ describe('BtnCn', () => {
     };
 
     it('should render button with correct label', () => {
-        const { getByText } = render(<BtnCn {...mockProps} />);
+        const { getByText } = render(<BtnComponent {...mockProps} />);
         expect(getByText(mockProps.label as string)).toBeDefined();
     });
 
     it('should call onEmitEvent when clicked', () => {
-        const { getByText } = render(<BtnCn {...mockProps} />);
+        const { getByText } = render(<BtnComponent {...mockProps} />);
         fireEvent.click(getByText(mockProps.label as string));
         expect(mockProps.onEmitEvent).toHaveBeenCalled();
     });
