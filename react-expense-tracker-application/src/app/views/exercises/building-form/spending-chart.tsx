@@ -13,7 +13,7 @@ interface Props {
     expenses: IExpense[];
 }
 
-const COLORS = ['#6366f1', '#22c55e', '#f59e0b'];
+const COLORS = ['#0071e3', '#34c759', '#ff9500', '#af52de', '#ff3b30'];
 
 const SpendingChart = ({ expenses }: Props) => {
     const data = Object.entries(
@@ -28,9 +28,6 @@ const SpendingChart = ({ expenses }: Props) => {
 
     return (
         <div>
-            <h2 className="mb-4 text-sm font-medium text-foreground">
-                Spending by category
-            </h2>
             <ResponsiveContainer width="100%" height={280}>
                 <PieChart>
                     <Pie
