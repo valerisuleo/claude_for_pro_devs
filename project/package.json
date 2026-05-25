@@ -1,0 +1,12 @@
+{
+  "name": "fullstack-bun-app",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "dev": "bun run --filter '*' dev",
+    "build": "bun run --filter '*' build",
+    "server": "bun run --filter server dev",
+    "client": "bun run --filter client dev"
+  }
+}
